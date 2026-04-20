@@ -1,0 +1,41 @@
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        stack = []
+        max_area = 0
+        
+        for i in range(len(heights)):
+            print(i, stack)
+            if not stack:
+                stack.append((i, heights[i]))   # 0 is index, 1 is value
+                continue
+            
+            
+
+            if heights[i] < stack[-1][1]: # Breaks the extension, pop the bigger elements.
+                pop_count = 0
+                last_popped_height = ()
+                while (stack and heights[i] < stack[-1][1]):
+                    popped_height = stack.pop()
+                    last_popped_height = popped_height
+                    area = (i - popped_height[0]) * popped_height[1]
+                    print(f'Area: {popped_height[0]} -> {i} * {popped_height[1]} = {area}')
+                    max_area = max(max_area, area)
+                    print(f'{stack}, max area: {max_area}')
+                    pop_count += 1
+                    print(stack)
+                if (last_popped_height and last_popped_height[1] > heights[i]):
+                    stack.append((last_popped_height[0], heights[i]))
+                else:
+                    stack.append((i - pop_count, heights[i]))
+            else:
+                if (stack[-1][1] != heights[i]):
+                    stack.append((i, heights[i]))
+
+        print("i", i)
+        while(stack):
+            popped_height = stack.pop()
+            area = (i - popped_height[0] + 1) * popped_height[1]
+            max_area = max(max_area, area)
+            print(f'{stack}, max area: {max_area}')
+            
+        return max_area
